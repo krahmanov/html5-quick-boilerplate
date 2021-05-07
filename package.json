@@ -1,27 +1,36 @@
 {
   "name": "gulp-boilerplate",
   "version": "1.0.0",
-  "description": "Gulp boilerplate for quick html + css + js development",
-  "main": "index.js",
+  "description": "Gulp boilerplate to get developing locally, quickly. ",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krahmanov/html5-quick-boilerplate.git"
+  },
+  "keywords": [
+    "gulp"
+  ],
   "author": "Kerim Rahmanov",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krahmanov/html5-quick-boilerplate/issues"
+  },
+  "homepage": "https://github.com/krahmanov/html5-quick-boilerplate#readme",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "bootstrap-4-grid": "^3.4.0",
-    "browser-sync": "^2.26.12",
-    "del": "^5.1.0",
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.1",
+    "browser-sync": "^2.26.14",
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^7.1.0",
     "gulp-sass": "^4.1.0",
     "gulp-uglify-es": "^2.0.0",
-    "gulp-w3c-html-validator": "^2.0.1"
+    "normalize.css": "^8.0.1"
   }
 }

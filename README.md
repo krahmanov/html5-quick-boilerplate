@@ -1,15 +1,33 @@
-<h1> HTML5 Quick Boilerplate</h1>
+**Gulp Boilerplate** 
 
-<p><strong>HTML5 Quick Boilerplate</strong> is startup template with <strong>Gulp 4</strong>, <strong>Sass/Scss</strong>, <strong>Browsersync</strong>, <strong>Autoprefixer</strong>, <strong>Uglify-ES</strong>, <strong>Clean-CSS</strong>, <strong>Babel</strong>, <strong>ImageMin</strong>, <strong>Bootstrap-Grid</strong>.</p>
+<br/>
 
-<h2>How to use HTML5 Quick Boilerplate</h2>
-<pre>git clone https://github.com/krahmanov/html5-quick-boilerplate</pre>
+![header](./app/images/screenshoot.png?raw=true)
 
-<ol>
-	<li>
-	Clone or <a href="https://github.com/krahmanov/html5-quick-boilerplate/archive/master.zip">Download</a> <strong>HTML5 Quick Boilerplate</strong> from GitHub
-	</li>
-	<li>Install Node Modules: <strong>npm i</strong></li>
-	<li>Run: <strong>gulp build</strong></li>
-  <li>Run: <strong>gulp</strong></li>
-</ol>
+## :tada: Overview
+<br/>
+
+A modern JavaScript starter toolkit for web-development using Gulp task runner. 
+  
+Fits best for static web sites. It automates most of the routine tasks such as image optimization, autoprefixes, scss, js optimization. It also comes with normalize.css. It can be extended in a simple way when project 
+require some extra functionality provided by thirdparty packages.
+
+## :hammer: Installation
+
+1. Go to the directory where you want ```cd somedirectory```
+2. Clone this repo to your computer ```git clone https://github.com/krahmanov/html5_gulp_boilerplate.git```
+3. Go to cloned repo ```cd html5_gulp_boilerplate```
+4. Install all packages with ```yarn install``` or ```npm install```
+
+<br />
+
+## :red_circle: Launch
+
+###### Gulp Commands 
+
+| name           | Description               |
+| -------------- | ------------------------- |
+| `gulp`  | Runs default task for development |
+| `gulp build` | Runs build task for production |
+
+<br/>

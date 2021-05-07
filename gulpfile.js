@@ -1,104 +1,103 @@
-// All Requirements
-const { src, dest, series, parallel, watch } = require('gulp');
-const bs = require('browser-sync').create();
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify-es').default;
-const babel = require('gulp-babel');
-const htmlValidator = require('gulp-w3c-html-validator');
-const sass = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
-const cleancss = require('gulp-clean-css');
-const imagemin = require('gulp-imagemin');
-const del = require('del');
+const { src, dest, watch, parallel, series } = require("gulp");
+const scss = require("gulp-sass");
+const concat = require("gulp-concat");
+const browserSync = require("browser-sync").create();
+const uglify = require("gulp-uglify-es").default;
+const autoprefixer = require("gulp-autoprefixer");
+const imagemin = require("gulp-imagemin");
+const babel = require("gulp-babel");
+const del = require("del");
 
-function browserSync() {
-  // Start the server
-  bs.init({
-    server: 'dist/',
+function browsersync() {
+  browserSync.init({
+    server: "app/",
     notify: false,
     online: false,
   });
 }
 
-// HTMl
-function html() {
-  return src('src/html/**/*.html')
-    .pipe(htmlValidator())
-    .pipe(htmlValidator.reporter())
-    .pipe(dest('dist/'))
-    .pipe(bs.stream());
-}
-
-// Styles
 function styles() {
-  return src('src/sass/**/*.scss')
-    .pipe(sass())
-    .pipe(concat('app.min.css'))
+  return src([
+    "node_modules/normalize.css/normalize.css",
+    "app/scss/style.scss",
+  ])
+    .pipe(scss({ outputStyle: "compressed" }))
+    .pipe(concat("style.min.css"))
     .pipe(
-      autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })
-    )
-    .pipe(
-      cleancss({
-        level: { 1: { specialComments: 0 } },
+      autoprefixer({
+        overrideBrowserslist: ["last 10 version"],
+        grid: true,
       })
     )
-    .pipe(dest('dist/css/'))
-    .pipe(bs.stream());
+    .pipe(dest("app/css"))
+    .pipe(browserSync.stream());
 }
 
-// Scripts
 function scripts() {
   return src([
-    // 'node_modules/topbar/topbar.js', // Additional Libraries can be added this topbar one is just for example
-    'src/js/**/*.js',
+    // 'node_modules/jquery/dist/jquery.js', // add custom scripts here
+    "app/js/main.js",
   ])
     .pipe(
       babel({
-        presets: ['@babel/preset-env'],
-        ignore: [
-          'node_modules/topbar/topbar.js', // Ignore library to avoid errors
-        ],
+        presets: ["@babel/preset-env"],
+        // ignore: [
+        //   "node_modules/jquery/dist/jquery.js", // Ignore library to avoid errors
+        // ],
       })
     )
-    .pipe(concat('app.bundle.min.js')) // Concatination
-    .pipe(uglify()) // Compression
-    .pipe(dest('dist/js/'))
-    .pipe(bs.stream()); // Update content with browserSync
+    .pipe(concat("main.min.js"))
+    .pipe(uglify())
+    .pipe(dest("app/js"))
+    .pipe(browserSync.stream());
 }
 
 function images() {
-  return src('src/img/**/*').pipe(imagemin()).pipe(dest('dist/img/'));
-}
-
-function cleanImg() {
-  return del('dist/img/**/*', { force: true });
+  return src("app/images/**/*")
+    .pipe(
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 75, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+        }),
+      ])
+    )
+    .pipe(dest("dist/images"));
 }
 
 function cleanDist() {
-  return del('dist/*', { force: true });
+  return del("dist");
 }
 
-function initWatch() {
-  watch(['src/js/**/*.js'], scripts);
-  watch(['src/sass/**/*.scss'], styles);
-  watch(['src/html/*.html'], html);
-  watch(['src/img/**/*'], images);
+function build() {
+  return src(
+    [
+      "app/css/style.min.css",
+      "app/fonts/**/*",
+      "app/js/main.min.js",
+      "app/*.html",
+    ],
+    { base: "app" }
+  ).pipe(dest("dist"));
 }
 
-exports.browserSync = browserSync;
-exports.scripts = scripts;
-exports.html = html;
+function watcher() {
+  // Watches for changes in SCSS folder and calls styles
+  watch(["app/scss/**/*.scss"], styles);
+  // Watches for changes in JS folder except app/js/main.min.js and calls scripts
+  watch(["app/js/**/*.js", "!app/js/main.min.js"], scripts);
+  // Watches for changes in app for html and updates browser
+  watch(["app/*.html"]).on("change", browserSync.reload);
+}
+
 exports.styles = styles;
+exports.watcher = watcher;
+exports.browsersync = browsersync;
+exports.scripts = scripts;
 exports.images = images;
-exports.cleanImg = cleanImg;
 exports.cleanDist = cleanDist;
-exports.build = series(cleanDist, styles, scripts, images, html);
 
-exports.default = parallel(
-  styles,
-  scripts,
-  images,
-  html,
-  browserSync,
-  initWatch
-);
+exports.build = series(cleanDist, images, build);
+exports.default = parallel(styles, scripts, browsersync, watcher);

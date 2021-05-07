@@ -1,0 +1,30 @@
+// MAIN INCLUDES
+@import './base/variables';
+
+// MAIN STYLES
+body{
+    background-color: $dark-color;
+    color: $light-color;
+}
+.hero{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+.text-3xl{
+    font-size: 3rem;
+}
+.text-lg{
+    font-size: 1.5rem;
+}
+.icons{
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+.icon{
+    max-width: 50px;
+    margin: 10px;
+}
